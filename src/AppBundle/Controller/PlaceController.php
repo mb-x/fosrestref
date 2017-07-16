@@ -18,7 +18,7 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 class PlaceController extends Controller
 {
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      * @Rest\Get("/places")
      */
     public function getPlacesAction(Request $request)
@@ -32,7 +32,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      * @Rest\Get("/places/{id}")
      */
     public function getPlaceAction(Request $request, $id)
@@ -42,7 +42,7 @@ class PlaceController extends Controller
             ->find($id);
         /* @var $place Place */
         if (empty($place)) {
-            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            return \FOS\RestBundle\View\View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
         return $place;
@@ -51,7 +51,7 @@ class PlaceController extends Controller
     /**
      * return code 400 if request in not validated, or 201 created
      *
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"place"})
      * @Rest\Post("/places")
      */
     public function postPlacesAction(Request $request)
@@ -72,7 +72,7 @@ class PlaceController extends Controller
     }
     /**
      * status 204 emtpy successful response
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"place"})
      * @Rest\Delete("/places/{id}")
      */
     public function removePlaceAction(Request $request)
@@ -82,14 +82,19 @@ class PlaceController extends Controller
             ->find($request->get('id'));
         /* @var $place Place */
 
-        if ($place) {
-            $em->remove($place);
-            $em->flush();
+        if (!$place) {
+            return;
         }
+
+        foreach ($place->getPrices() as $price) {
+            $em->remove($price);
+        }
+        $em->remove($place);
+        $em->flush();
     }
 
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      * @Rest\Put("/places/{id}")
      */
     public function updatePlaceAction(Request $request)
@@ -98,7 +103,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"place"})
      * @Rest\Patch("/places/{id}")
      */
     public function patchPlaceAction(Request $request)
@@ -113,7 +118,7 @@ class PlaceController extends Controller
         /* @var $place Place */
 
         if (empty($place)) {
-            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+            return \FOS\RestBundle\View\View::create(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
         $form = $this->createForm(PlaceType::class, $place);

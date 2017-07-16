@@ -5,3 +5,7 @@ app:
 places:
     type:     rest
     resource: "@AppBundle/Controller/PlaceController.php"
+
+prices:
+    type:     rest
+    resource: AppBundle\Controller\Place\PriceController
