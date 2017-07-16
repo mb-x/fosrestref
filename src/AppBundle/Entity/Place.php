@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Place
  *
- * @ORM\Table(name="place")
+ * @ORM\Table(name="place",
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="places_name_unique",columns={"name"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlaceRepository")
  */
 class Place
@@ -35,11 +36,11 @@ class Place
      */
     private $address;
 
-    public function __construct($name, $address)
-    {
-        $this->name = $name;
-        $this->address = $address;
-    }
+//    public function __construct($name, $address)
+//    {
+//        $this->name = $name;
+//        $this->address = $address;
+//    }
 
     /**
      * Get id
