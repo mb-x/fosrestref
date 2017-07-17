@@ -4,6 +4,10 @@ app:
 
 places:
     type:     rest
+    resource: "@AppBundle/Controller/UserController.php"
+
+places:
+    type:     rest
     resource: "@AppBundle/Controller/PlaceController.php"
 
 prices:

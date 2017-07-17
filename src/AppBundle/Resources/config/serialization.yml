@@ -20,3 +20,15 @@ AppBundle\Entity\Price:
             groups: ['place', 'price']
         place:
             groups: ['price']
+
+
+AppBundle\Entity\User:
+    attributes:
+        id:
+            groups: ['user']
+        firstname:
+            groups: ['user']
+        lastname:
+            groups: ['user']
+        email:
+            groups: ['user']
