@@ -25,10 +25,24 @@ AppBundle\Entity\Price:
 AppBundle\Entity\User:
     attributes:
         id:
-            groups: ['user']
+            groups: ['user', 'preference', 'auth-token']
         firstname:
-            groups: ['user']
+            groups: ['user', 'preference', 'auth-token']
         lastname:
-            groups: ['user']
+            groups: ['user', 'preference', 'auth-token']
         email:
-            groups: ['user']
+            groups: ['user', 'preference', 'auth-token']
+
+AppBundle\Entity\AuthToken:
+    attributes:
+        id:
+            groups: ['auth-token']
+        value:
+            groups: ['auth-token']
+        createdAt:
+            groups: ['auth-token']
+        user:
+            groups: ['auth-token']
+
+
+

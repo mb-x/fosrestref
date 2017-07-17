@@ -41,3 +41,13 @@ AppBundle\Entity\User:
                 min: 4
                 max: 50
 
+AppBundle\Entity\Credentials:
+    properties:
+        login:
+            - NotBlank: ~
+            - Type: string
+        password:
+            - NotBlank: ~
+            - Type: string
+
+
