@@ -2,7 +2,7 @@ app:
     resource: "@AppBundle/Controller/DefaultController.php"
     type:     annotation
 
-places:
+users:
     type:     rest
     resource: "@AppBundle/Controller/UserController.php"
 

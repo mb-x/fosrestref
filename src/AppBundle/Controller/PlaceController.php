@@ -14,18 +14,27 @@ use FOS\RestBundle\Controller\Annotations\Get; // N'oublons pas d'inclure Get
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcher;
 
 class PlaceController extends Controller
 {
     /**
      * @Rest\View(serializerGroups={"place"})
      * @Rest\Get("/places")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Index de fin de la pagination")
+     * @QueryParam(name="sort", requirements="(asc|desc)", nullable=true, description="Ordre de tri (basé sur le nom)")
      */
-    public function getPlacesAction(Request $request)
+    public function getPlacesAction(Request $request, ParamFetcher $paramFetcher)
     {
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $sort = $paramFetcher->get('sort');
+
         $places = $this->get('doctrine.orm.entity_manager')
             ->getRepository('AppBundle:Place')
-            ->findAll();
+            ->getPlacesList($offset, $limit, $sort);
         /* @var $places Place[] */
 
         return $places;
@@ -63,6 +72,10 @@ class PlaceController extends Controller
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
+            foreach ($place->getPrices() as $price) {
+                $price->setPlace($place);
+                $em->persist($price);
+            }
             $em->persist($place);
             $em->flush();
             return $place;

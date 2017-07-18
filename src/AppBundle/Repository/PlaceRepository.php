@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class PlaceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getPlacesList($offset, $limit, $sort){
+        $qb = $this->createQueryBuilder('p');
+
+        if(!empty($offset)){
+            $qb->setFirstResult($offset);
+        }
+        if(!empty($limit)){
+            $qb->setMaxResults($limit);
+        }
+        if(in_array($sort, ['asc', 'desc'])){
+            $qb->orderBy('p.name', $sort);
+        }
+        return $qb->getQuery()->getResult();
+    }
+
 }
