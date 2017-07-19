@@ -5,15 +5,23 @@ app:
 users:
     type:     rest
     resource: "@AppBundle/Controller/UserController.php"
+    prefix: /api
 
 places:
     type:     rest
     resource: "@AppBundle/Controller/PlaceController.php"
+    prefix: /api
 
 prices:
     type:     rest
     resource: AppBundle\Controller\Place\PriceController
+    prefix: /api
 
 auth-tokens:
     type:     rest
     resource: AppBundle\Controller\AuthTokenController
+    prefix: /api
+
+nelmio-api-doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /documentation

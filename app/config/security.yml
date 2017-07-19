@@ -19,8 +19,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        doc:
+            pattern: ^/documentation
+            security: false
+
         main:
-            pattern: ^/
+            pattern: ^/api
             stateless: true
             simple_preauth:
                 authenticator: auth_token_authenticator

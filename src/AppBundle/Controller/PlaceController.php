@@ -16,10 +16,15 @@ use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class PlaceController extends Controller
 {
     /**
+     * @ApiDoc(
+     *    description="Récupère la liste des lieux de l'application",
+     *    output= { "class"=Place::class, "collection"=true, "groups"={"place"} }
+     * )
      * @Rest\View(serializerGroups={"place"})
      * @Rest\Get("/places")
      * @QueryParam(name="offset", requirements="\d+", default="", description="Index de début de la pagination")
@@ -60,6 +65,18 @@ class PlaceController extends Controller
     /**
      * return code 400 if request in not validated, or 201 created
      *
+     * @ApiDoc(
+     *    description="Crée un lieu dans l'application",
+     *    input={"class"=PlaceType::class, "name"=""},
+     *    statusCodes = {
+     *        201 = "Création avec succès",
+     *        400 = "Formulaire invalide"
+     *    },
+     *    responseMap = {
+     *         201 = {"class"=Place::class, "groups"={"place"}},
+     *         400 = { "class"=PlaceType::class, "form_errors"=true, "name" = ""}
+     *    }
+     * )
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"place"})
      * @Rest\Post("/places")
      */
